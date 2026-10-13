@@ -1,0 +1,83 @@
+# OS / editors
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local agent settings and session data (AGENTS.md remains tracked)
+/.codex/
+/.agents/
+
+# Environment files: only reviewed dummy examples may be tracked
+.env
+.env.*
+!.env.example
+
+# Credentials / private keys / local certificate bundles
+.aws/
+.ssh/
+.gnupg/
+.netrc
+.npmrc
+.pypirc
+credentials
+credentials.*
+secrets/
+secrets.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+*.jks
+
+# Event-specific local configuration
+*.local
+*.local.*
+/local/
+/private/
+
+# Diagnostic results and captures; examples belong in a reviewed examples/ directory
+/results/
+/reports/
+/logs/
+/captures/
+*.log
+*.pcap
+*.pcapng
+*.cap
+*.har
+*.sqlite
+*.sqlite3
+*.db
+
+# Generated builds, dependencies, and caches
+/bin/
+/dist/
+/build/
+/target/
+/tmp/
+/temp/
+.cache/
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+/coverage/
+
+# Keep source files, dependency lockfiles, and reviewed examples trackable.
+# A .gitignore does not remove files that Git already tracks.
