@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "noc-check result envelope v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "config": {
+      "type": "object"
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "check": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          },
+          "ip_version": {
+            "enum": [
+              0,
+              4,
+              6
+            ]
+          },
+          "status": {
+            "enum": [
+              "PASS",
+              "WARN",
+              "FAIL",
+              "SKIP",
+              "ERROR"
+            ]
+          },
+          "reason": {
+            "type": "string"
+          },
+          "elapsed_ms": {
+            "type": "number",
+            "minimum": 0
+          },
+          "details": {
+            "type": "object",
+            "description": "検査別データ。詳細はdocs/checks.mdの結果データを参照"
+          }
+        },
+        "required": [
+          "check",
+          "target",
+          "ip_version",
+          "status",
+          "reason",
+          "elapsed_ms"
+        ]
+      }
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "WARN",
+        "FAIL",
+        "SKIP",
+        "ERROR"
+      ]
+    },
+    "exit_code": {
+      "enum": [
+        0,
+        1,
+        2
+      ]
+    },
+    "elapsed_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "error": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "started_at",
+    "config",
+    "results",
+    "status",
+    "exit_code",
+    "elapsed_ms"
+  ]
+}

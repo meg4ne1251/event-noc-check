@@ -1,6 +1,6 @@
 # 開発・変更の進め方
 
-まず [README.md](README.md)、[AGENTS.md](AGENTS.md)、[チェック仕様](docs/checks.md) を確認してください。現在は仕様整理の段階であり、ビルド・テストコマンドはまだありません。実装時に実際の手順をこの文書へ追加します。
+まず [README.md](README.md)、[AGENTS.md](AGENTS.md)、[チェック仕様](docs/checks.md) を確認してください。Go製CLIを実装しています。検査条件を変える場合はREADMEとチェック仕様も更新してください。
 
 ## 変更の方針
 
@@ -34,3 +34,17 @@ git diff --cached
 - ライセンスは未決定。公開前に採用方針を決め、必要なら `LICENSE` を追加する。
 
 PRには変更の目的、挙動、実施した検証、未確認の環境を記載してください。
+
+## ビルドとテスト
+
+```sh
+go build -o bin/noc-check ./cmd/noc-check
+go test -race -cover ./...
+go vet ./...
+# 任意のOS実コマンド確認。宛先はループバックのみ
+NOC_CHECK_LOCAL_COMMANDS=1 go test ./internal/check -run TestLocalOSCommands -v
+```
+
+標準テストは外部ネットワーク不要ですが、ローカルHTTP/TLSサーバーの待受を許可した環境が必要です。設定エラー、DNSの方式別障害、IPv6失敗、証明書不正、期限到達、依存不足、ログ保存の有無、JSON出力を確認します。OS実コマンドテストはmacOSのIPv6断片化禁止が権限不足になる環境でも、正しい `SKIP` を確認します。
+
+`.github/workflows/test.yml` はUbuntu/macOSで同じテストとループバック試験を実行します。公開DNSへの問い合わせはCIに含めません。実通信が必要な場合のみ `bin/noc-check --on-missing skip` を明示実行してください。結果を保存する場合は `results/` か `reports/` とし、コミットしません。

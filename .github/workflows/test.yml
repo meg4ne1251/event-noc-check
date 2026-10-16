@@ -1,0 +1,29 @@
+name: Test
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+          cache: false
+      - name: Install Linux diagnostic commands
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y iputils-ping iproute2 dnsutils traceroute
+      - name: Formatting
+        run: test -z "$(gofmt -l cmd internal)"
+      - run: go vet ./...
+      - run: go test -race -cover ./...
+      - name: Real OS commands on loopback only
+        run: NOC_CHECK_LOCAL_COMMANDS=1 go test ./internal/check -run TestLocalOSCommands -v
+      - run: go build -o bin/noc-check ./cmd/noc-check

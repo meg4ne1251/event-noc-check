@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "name": "setup-example",
+  "checks": [
+    "connection",
+    "icmp",
+    "dns_udp",
+    "dns_tcp",
+    "system_dns",
+    "mtu",
+    "https",
+    "traceroute"
+  ],
+  "ip_versions": [
+    4,
+    6
+  ],
+  "ping": {
+    "targets": [
+      "192.0.2.1",
+      "2001:db8::1"
+    ],
+    "count": 5
+  },
+  "dns": {
+    "servers": [
+      "192.0.2.53",
+      "2001:db8::53"
+    ],
+    "name": "example.com"
+  },
+  "mtu": {
+    "targets": [
+      "192.0.2.1",
+      "2001:db8::1"
+    ],
+    "packet_sizes": [
+      1200,
+      1280,
+      1400,
+      1450,
+      1480,
+      1492,
+      1500
+    ],
+    "required_sizes": []
+  },
+  "https": {
+    "url": "https://example.com/",
+    "status": 200,
+    "empty_body": false
+  },
+  "traceroute": {
+    "targets": [
+      "192.0.2.1",
+      "2001:db8::1"
+    ],
+    "as_lookup": false
+  },
+  "output": {
+    "text_log": false,
+    "directory": "results"
+  }
+}

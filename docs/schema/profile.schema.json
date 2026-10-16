@@ -1,0 +1,268 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "noc-check profile v1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "name": {
+      "type": "string"
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "connection",
+          "icmp",
+          "dns_udp",
+          "dns_tcp",
+          "system_dns",
+          "mtu",
+          "https",
+          "traceroute"
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true
+    },
+    "ip_versions": {
+      "type": "array",
+      "items": {
+        "enum": [
+          4,
+          6
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 2,
+      "uniqueItems": true
+    },
+    "ping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "IPv4/IPv6リテラル。重複・mapped IPv6・zone・multicast・unspecifiedを拒否"
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        "wait_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 35
+        },
+        "interval_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "warn_average_ms": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "warn_max_ms": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "dns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "servers": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "IPv4/IPv6リテラル。重複・mapped IPv6・zone・multicast・unspecifiedを拒否"
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 254
+        },
+        "attempts": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "wait_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 15
+        }
+      }
+    },
+    "mtu": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "IPv4/IPv6リテラル。重複・mapped IPv6・zone・multicast・unspecifiedを拒否"
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "packet_sizes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 64,
+            "maximum": 9000
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "required_sizes": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 64,
+            "maximum": 9000
+          },
+          "minItems": 0,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "wait_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 15
+        },
+        "interval_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5
+        }
+      }
+    },
+    "https": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://",
+          "description": "userinfo/query/fragmentは禁止"
+        },
+        "status": {
+          "type": "integer",
+          "minimum": 200,
+          "maximum": 599
+        },
+        "empty_body": {
+          "type": "boolean"
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 35
+        }
+      }
+    },
+    "traceroute": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "targets": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "IPv4/IPv6リテラル。重複・mapped IPv6・zone・multicast・unspecifiedを拒否"
+          },
+          "minItems": 1,
+          "maxItems": 16,
+          "uniqueItems": true
+        },
+        "max_hops": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "probes": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "wait_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 3
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 60
+        },
+        "as_lookup": {
+          "type": "boolean"
+        }
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "text_log": {
+          "type": "boolean"
+        },
+        "directory": {
+          "type": "string"
+        }
+      }
+    },
+    "total_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 180
+    }
+  },
+  "required": [
+    "schema_version",
+    "checks"
+  ],
+  "description": "CLIはJSON Schemaに加え重複キー・null・アドレスの意味・選択IP経路の宛先有無・required_sizesの部分集合を検証します。"
+}
